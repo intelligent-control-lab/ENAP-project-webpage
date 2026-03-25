@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-46KZKH35E6"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-46KZKH35E6");
+    </script>
+    <meta charset="utf-8" />
+    <meta name="description" content="" />
+    <meta
+      name="keywords"
+      content="Imitation Learning, Large Models, Keypoint Abstraction, Diffusion Model"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      KALM: Keypoint Abstraction using Large Models for Object-Relative
+      Imitation Learning
+    </title>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+
+      gtag("js", new Date());
+
+      gtag("config", "G-PYVRSFMDRL");
+    </script>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./static/css/bulma.min.css" />
+    <link rel="stylesheet" href="./static/css/bulma-carousel.min.css" />
+    <link rel="stylesheet" href="./static/css/bulma-slider.min.css" />
+    <link rel="stylesheet" href="./static/css/fontawesome.all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css"
+    />
+    <link rel="stylesheet" href="./static/css/index.css" />
+    <link rel="icon" href="./static/images/NTU_RLL_logo.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"
+      integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq"
+      crossorigin="anonymous"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"
+      integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"
+      integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI"
+      crossorigin="anonymous"
+      onload="renderMathInElement(document.body);"
+    ></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="./static/js/fontawesome.all.min.js"></script>
+    <script src="./static/js/bulma-carousel.min.js"></script>
+    <script src="./static/js/bulma-slider.min.js"></script>
+    <script src="./static/js/index.js"></script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="static/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="static/favicon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="static/favicon/site.webmanifest" />
+    <link
+      rel="mask-icon"
+      href="static/favicon/safari-pinned-tab.svg"
+      color="#5bbad5"
+    />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#ffffff" />
+  </head>
+  <body>
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <div class="column has-text-centered">
+              <h1 class="title is-1 publication-title">
+                KALM: Keypoint Abstraction using Large Models <br />
+                for Object-Relative Imitation Learning
+              </h1>
+              <h3 class="title is-4 publication-venue">
+                <a target="_blank" href="https://2025.ieee-icra.org"
+                  >ICRA, 2025</a
+                >
+              </h3>
+              <h3 class="title is-5 publication-venue">
+                <a target="_blank" href="https://sites.google.com/view/langrob-corl24"
+                  >LangRob @ CoRL 2024 (Best Paper)</a
+                >
+              </h3>
+              <div class="is-size-5 publication-authors">
+                <span class="author-block">
+                  <a href="https://fang-xiaolin.github.io">Xiaolin Fang</a
+                  ><sup>*1</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://borueihuang.com">Bo-Ruei Huang</a
+                  ><sup>*12</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://jiayuanm.com">Jiayuan Mao</a><sup>*1</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://jasshone.github.io/">Jasmine Shone</a
+                  ><sup>1</sup>,
+                </span>
+                <br />
+                <span class="author-block">
+                  <a href="https://cocosci.mit.edu/josh">Joshua B. Tenenbaum</a
+                  ><sup>1</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://people.csail.mit.edu/tlp"
+                    >Tomás Lozano-Pérez</a
+                  ><sup>1</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://people.csail.mit.edu/lpk"
+                    >Leslie Pack Kaelbling</a
+                  ><sup>1</sup>
+                </span>
+              </div>
+              <div class="is-size-5 publication-authors">
+                <span class="author-block"
+                  ><sup>1</sup>Massachusetts Institute of Technology</span
+                >,
+                <span class="author-block"
+                  ><sup>2</sup>National Taiwan University</span
+                >
+              </div>
+              <div class="affiliation-note">
+                <sup>*</sup> indicates equal contributions
+              </div>
+
+              <div class="column has-text-centered">
+                <div class="publication-links">
+                  <!-- PDF Link. -->
+                  <span class="link-block">
+                    <a
+                      href="http://arxiv.org/pdf/2410.23254"
+                      class="external-link button is-normal is-rounded is-dark"
+                    >
+                      <span class="icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </span>
+                      <span>Paper</span>
+                    </a>
+                  </span>
+                  <!-- ArXiv Link. -->
+                  <span class="link-block">
+                    <a
+                      href="http://arxiv.org/abs/2410.23254"
+                      class="external-link button is-normal is-rounded is-dark"
+                    >
+                      <span class="icon">
+                        <i class="ai ai-arxiv"></i>
+                      </span>
+                      <span>arXiv</span>
+                    </a>
+                  </span>
+                  <!-- Video Link. -->
+                  <span class="link-block">
+                    <a
+                      href="https://www.youtube.com/watch?v=khLgcKj_2dc"
+                      class="external-link button is-normal is-rounded is-dark"
+                    >
+                      <span class="icon">
+                        <i class="fab fa-youtube"></i>
+                      </span>
+                      <span>Video</span>
+                    </a>
+                  </span>
+                  <!-- Code Link. -->
+                  <span class="link-block">
+                    <a
+                      href="https://github.com/FANG-Xiaolin/KALM"
+                      class="external-link button is-normal is-rounded is-dark"
+                    >
+                      <span class="icon">
+                        <i class="fab fa-github"></i>
+                      </span>
+                      <span>Code</span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- teaser -->
+    <section class="hero teaser">
+      <div class="container is-max-desktop">
+        <div class="hero-body">
+          <video
+            id="teaser"
+            autoplay
+            controls
+            playsinline
+            loop
+            muted
+            height="100%"
+          >
+            <source src="./static/videos/teaser.mp4" type="video/mp4" />
+          </video>
+          <h2 class="subtitle has-text-centered">
+            <br />
+            KALM distills <strong>keypoint abstraction</strong> by prompting and
+            verifying keypoint proposals from
+            <strong>large pre-trained models</strong> using a small amount of
+            robot demonstration data, which is used to train a
+            keypoint-conditioned policy model.
+          </h2>
+        </div>
+      </div>
+    </section>
+
+    <!-- tasks -->
+    <section class="hero is-light is-small">
+      <div class="hero-body">
+        <div class="container">
+          <div id="results-carousel" class="carousel results-carousel">
+            <div class="item">
+              <video
+                poster=""
+                id="pour-obj"
+                autoplay
+                controls
+                muted
+                loop
+                playsinline
+		height="100%"
+              >
+                <source src="./static/videos/rainbow.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="item">
+              <video
+                poster=""
+                id="pour-obj"
+                autoplay
+                controls
+                muted
+                loop
+                playsinline
+ 		height="100%"
+              >
+                <source src="./static/videos/pour_obj.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="item">
+              <video
+                poster=""
+                id="pour-view"
+                autoplay
+                controls
+                muted
+                loop
+                playsinline
+ 		height="100%"
+              >
+                <source src="./static/videos/pour_view.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="item">
+              <video
+                poster=""
+                id="kcup-obj"
+                autoplay
+                controls
+                muted
+                loop
+                playsinline
+                height="100%"
+               >
+                <source src="./static/videos/kcup_obj.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="item">
+              <video
+                poster=""
+                id="kcup-view"
+                autoplay
+                controls
+                muted
+                loop
+                playsinline
+                height="100%"
+              >
+                <source src="./static/videos/kcup_view.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="item">
+              <video
+                poster=""
+                id="drawer-obj"
+                autoplay
+                controls
+                muted
+                loop
+                playsinline
+                height="100%"
+              >
+                <source src="./static/videos/drawer_obj.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="item">
+              <video
+                poster=""
+                id="drawer-view"
+                autoplay
+                controls
+                muted
+                loop
+                playsinline
+                height="100%"
+              >
+                <source
+                  src="./static/videos/drawer_view.mp4"
+                  type="video/mp4"
+                />
+              </video>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container is-max-desktop">
+        <div class="hero-body" style="padding-top: 0">
+          <h2 class="subtitle has-text-centered">
+            KALM generalizes effectively across varying
+            <strong>object poses</strong>, <strong>camera views</strong>, and
+            <strong>object instances</strong> <br />
+            with only
+            <strong>10 demonstrations</strong>.
+          </h2>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <!-- Abstract. -->
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified">
+              <p>
+                Generalization to novel object configurations and instances
+                across diverse tasks and environments is a critical challenge in
+                robotics. Keypoint-based representations have been proven
+                effective as a succinct representation for capturing essential
+                object features, and for establishing a reference frame in
+                action prediction, enabling data-efficient learning of robot
+                skills. However, their manual design nature and reliance on
+                additional human labels limit their scalability. In this paper,
+                we propose KALM, a framework that leverages large pre-trained
+                vision-language models (LMs) to automatically generate
+                task-relevant and cross-instance consistent keypoints. KALM
+                distills robust and consistent keypoints across views and
+                objects by generating proposals using LMs and verifies them
+                against a small set of robot demonstration data. Based on the
+                generated keypoints, we can train keypoint-conditioned policy
+                models that predict actions in keypoint-centric frames, enabling
+                robots to generalize effectively across varying object poses,
+                camera views, and object instances with similar functional
+                shapes. Our method demonstrates strong performance in the real
+                world, adapting to different tasks and environments from only a
+                handful of demonstrations while requiring no additional labels.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!--/ Abstract. -->
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="columns is-centered">
+            <div class="column is-full-width">
+              <div class="content has-text-justified">
+                <h2 class="title is-3">KALM Overview</h2>
+              </div>
+              <div class="content has-text-centered">
+                <img
+                  src="./static/images/framework.jpeg"
+                  alt="framework"
+                  width="90%"
+                />
+              </div>
+              <div class="content has-text-justified">
+                <p>
+                  <strong>(a)</strong> Given a demonstration video and a task
+                  description, we prompt a VLM to generate a
+                  <span style="color: #f27200"
+                    >coarse-grained region proposal</span
+                  >
+                  , which is refined into a
+                  <span style="color: #017100">fine-grained point set</span>
+                  via image segmentation models and VLMs. We use a
+                  <span style="color: #b51700"
+                    >keypoint detection function \(\phi\)</span
+                  >
+                  to identify keypoint correspondences across a handful of
+                  demonstration trajectories. The final keypoints set is
+                  selected based on
+                  <span style="color: #663366">correspondence consistency</span>
+                  verification. These keypoints are used for training a
+                  keypoint-conditioned action model.
+                  <strong>(b)</strong>
+                  Given a new scene, the
+                  <span style="color: #b51700"
+                    >keypoint detection function \(\phi\)</span
+                  >
+                  localizes the distilled keypoints. The learned
+                  keypoint-conditioned action prediction model generates an
+                  object-relative end-effector trajectory based on the keypoint
+                  positions and features.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="columns is-centered">
+            <div class="column is-full-width">
+              <div class="content has-text-justified">
+                <h2 class="title is-3">Simulation Result</h2>
+                <p>
+                  We evaluate our method, KALM, on five manipulation tasks in
+                  the Meta-World simulator, using Diffuser and 3D Diffuser Actor
+                  as baselines, along with ablation studies on keypoint usage.
+                  Our method consistently outperforms these baselines,
+                  demonstrating that keypoints serve as an effective
+                  abstraction.
+                </p>
+              </div>
+              <div class="content has-text-centered">
+                <img
+                  src="./static/images/sim_result.png"
+                  alt="simulation result"
+                  width="90%"
+                />
+              </div>
+              <div class="content has-text-centered">
+                <video
+                  poster=""
+                  id="sim"
+                  autoplay
+                  controls
+                  muted
+                  loop
+                  playsinline
+                  width="70%"
+                >
+                  <source src="./static/videos/sim.mp4" type="video/mp4" />
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="columns is-centered">
+            <div class="column is-full-width">
+              <div class="content has-text-justified">
+                <h2 class="title is-3">Data Efficiency</h2>
+                <p>
+                  We measure the average success rate across all 5 tasks, with
+                  the number of demonstrations increasing from 10 to 500. Our
+                  method, KALM, demonstrates superior data efficiency compared
+                  to all baselines.
+                </p>
+              </div>
+              <div class="content has-text-centered">
+                <img
+                  src="./static/images/data_efficiency.jpg"
+                  alt="simulation result"
+                  width="60%"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="columns is-centered">
+            <div class="column is-full-width">
+              <div class="content has-text-justified">
+                <h2 class="title is-3">Real-world Result</h2>
+                <p>
+                  We evaluate all models in varying camera and object poses
+                  (View), as well as on unseen objects (Cross obj.). Our method
+                  demonstrates strong performance under view changes and
+                  showcases generalization to objects that are not seen during
+                  diffusion training time.
+                </p>
+              </div>
+              <div class="content has-text-centered">
+                <img
+                  src="./static/images/real_setup.png"
+                  alt="simulation result"
+                  width="60%"
+                />
+              </div>
+              <div class="content has-text-centered">
+                <img
+                  src="./static/images/real_result.png"
+                  alt="simulation result"
+                  width="60%"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="BibTeX">
+      <div class="container is-max-desktop content">
+        <h2 class="title">BibTeX</h2>
+        <pre><code>
+@inproceedings{fang2025kalm,
+  title={{KALM: Keypoint Abstraction using Large Models for Object-Relative Imitation Learning}},
+  author={Xiaolin Fang* and Bo-Ruei Huang* and Jiayuan Mao* and Jasmine Shone and Joshua B. Tenenbaum and Tomás Lozano-Pérez and Leslie Pack Kaelbling},
+  booktitle={IEEE International Conference on Robotics and Automation (ICRA)},
+  year={2025}
+}
+        </code></pre>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="content has-text-centered">
+          <!-- PDF -->
+          <a class="icon-link" href="">
+            <i class="fas fa-file-pdf"></i>
+          </a>
+          <!-- Code -->
+          <!-- <a
+            class="icon-link"
+            href="https://github.com/NVlabs/DRAIL"
+            class="external-link"
+            disabled
+          >
+            <i class="fab fa-github"></i>
+          </a> -->
+        </div>
+        <div class="columns is-centered">
+          <div class="column is-8">
+            <div class="content has-text-centered">
+              <p>
+                This website template is borrowed from
+                <a href="https://github.com/nerfies/nerfies.github.io"
+                  >Nerfies</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

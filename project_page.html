@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ENAP: Emergent Neural Automaton Policies</title>
+
+  <!-- KaTeX (数学公式渲染) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body);"></script>
+
+  <!-- FontAwesome (图标) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Academicons (学术图标如 arXiv) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" />
+
+  <style>
+    /* ========== CSS Variables ========== */
+    :root {
+      --cream:  #f7f0d3;
+      --pink:   #f7e9e6;
+      --green:  #eff2e7;
+      --blue:   #ecf1f5;
+      --bg:     #f9f9f8;
+      --white:  #ffffff;
+      --text:   #3a3a3a;
+      --text-light: #7a7a7a;
+      --accent: #5b7a6e;
+      --accent-dark: #3d5a4e;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --shadow: 0 3px 18px rgba(0,0,0,0.09);
+      --shadow-hover: 0 6px 30px rgba(0,0,0,0.15);
+    }
+
+    /* ========== Reset & Base ========== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 56px; }
+
+    body {
+      font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      padding: 34px 0 24px;
+    }
+
+    a { color: var(--accent-dark); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ========== Section Spacing ========== */
+    .section {
+      padding: 48px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    /* ========== Cards ========== */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 40px 44px;
+      transition: box-shadow 0.25s ease;
+    }
+    .card:hover {
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* Colored accent strips on the left */
+    .card--cream  { border-left: 5px solid var(--cream); }
+    .card--pink   { border-left: 5px solid #e8c4bc; }
+    .card--green  { border-left: 5px solid #c5d6b2; }
+    .card--blue   { border-left: 5px solid #b8cfe0; }
+
+    /* ========== Page Card ========== */
+    .page-card {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: var(--white);
+      border-radius: 20px;
+      box-shadow: 0 3px 30px rgba(0,0,0,0.09);
+      overflow: hidden;
+    }
+
+    /* ========== Header / Hero ========== */
+    .hero-section {
+      background: var(--white);
+      padding: 64px 0 48px;
+      text-align: center;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .paper-title {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 16px;
+    }
+    .paper-title .hl {
+      background: linear-gradient(180deg, transparent 55%, var(--cream) 55%);
+    }
+    .enap { color: #BE5D3D; font-weight: bold; }
+
+    .blink-cursor {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      margin-left: 6px;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+    .blink-cursor::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--text);
+    }
+    .blink-cursor::after {
+      content: '';
+      width: 3px;
+      height: 0.7em;
+      background: var(--text);
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .venue-badge {
+      display: inline-block;
+      background: #d8e4ce;
+      color: #455e3a;
+      padding: 6px 20px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      margin-bottom: 28px;
+      text-decoration: none;
+    }
+    .venue-badge:hover { filter: brightness(0.95); text-decoration: none; }
+
+    .authors {
+      font-size: 1.05rem;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .authors a { color: var(--text); }
+    .authors a:hover { color: var(--accent-dark); }
+
+    .affiliations {
+      font-size: 0.92rem;
+      color: var(--text-light);
+      margin-bottom: 8px;
+    }
+
+    .equal-contrib {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      margin-bottom: 28px;
+    }
+
+    /* ========== Link Buttons ========== */
+    .link-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: 24px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+      transition: filter 0.2s, transform 0.15s;
+      text-decoration: none;
+    }
+    .link-btn:hover {
+      filter: brightness(0.93);
+      transform: translateY(-1px);
+      text-decoration: none;
+    }
+    .link-btn i { font-size: 1.1rem; }
+
+    .link-btn--paper  { background: #ebd5cf; color: #6b4940; }
+    .link-btn--arxiv  { background: #ebd5cf; color: #6b4940; }
+    .link-btn--video  { background: #ebd5cf; color: #6b4940; }
+    .link-btn--code   { background: #ebd5cf; color: #6b4940; }
+
+    /* ========== Teaser ========== */
+    .teaser-section {
+      padding: 48px 0 32px;
+    }
+    .teaser-media {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      display: block;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .teaser-caption {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.88rem;
+      color: var(--text-light);
+      max-width: 750px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ========== Section Titles ========== */
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: bold;
+      margin-bottom: 24px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-title .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .dot--cream { background: #ddd5a5; }
+    .dot--pink  { background: #e8c4bc; }
+    .dot--green { background: #c5d6b2; }
+    .dot--blue  { background: #b8cfe0; }
+
+    /* Pastel highlight behind section title text */
+    .section-title .title-text {
+      padding: 2px 14px;
+      border-radius: 6px;
+    }
+    .highlight--cream { background: var(--cream); }
+    .highlight--pink  { background: var(--pink); }
+    .highlight--green { background: var(--green); }
+    .highlight--blue  { background: var(--blue); }
+
+    /* Inline highlight for emphasis text */
+    .hl-cream { background: var(--cream); padding: 1px 6px; border-radius: 4px; }
+    .hl-pink  { background: var(--pink);  padding: 1px 6px; border-radius: 4px; }
+    .hl-green { background: var(--green); padding: 1px 6px; border-radius: 4px; }
+    .hl-blue  { background: var(--blue);  padding: 1px 6px; border-radius: 4px; }
+
+    /* ========== Abstract ========== */
+    .abstract-section { }
+    .abstract-text {
+      text-align: justify;
+      font-size: 0.88rem;
+      line-height: 1.75;
+    }
+
+    /* ========== Method ========== */
+    .method-section { }
+    .method-figure {
+      width: 100%;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .method-desc {
+      margin-top: 24px;
+      text-align: justify;
+      font-size: 0.88rem;
+      line-height: 1.75;
+    }
+
+    /* ========== Results ========== */
+    .results-section { }
+
+    /* Horizontal row: Quantitative + Table side by side */
+    .results-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 8px;
+    }
+    .results-col { margin-bottom: 0; }
+
+    .result-block {
+      margin-bottom: 36px;
+    }
+    .result-block h3 {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+    .card--pink h3  { background: var(--pink);  padding: 2px 12px; border-radius: 5px; }
+    .card--blue h3  { background: var(--blue);  padding: 2px 12px; border-radius: 5px; }
+    .card--green h3 { background: var(--green); padding: 2px 12px; border-radius: 5px; }
+    .card--cream h3 { background: var(--cream); padding: 2px 12px; border-radius: 5px; }
+    .result-block p {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      margin-bottom: 16px;
+    }
+    .result-img {
+      width: 100%;
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow);
+    }
+
+    /* Qualitative panel: vertical tabs left + content right */
+    .qual-panel {
+      display: flex;
+      gap: 0;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      background: var(--white);
+    }
+
+    .qual-tabs {
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      width: 52px;
+      background: #f8f8f6;
+      border-right: 1px solid #eee;
+    }
+
+    .qual-tab {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background: var(--blue);
+      cursor: pointer;
+      padding: 16px 4px;
+      position: relative;
+      transition: background 0.2s;
+      font-family: 'Comic Sans MS', cursive;
+      font-size: 0;
+    }
+    .qual-tab span {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-size: 0.82rem;
+      font-weight: bold;
+      color: #7a8a9e;
+      white-space: nowrap;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+    .qual-tab:hover { background: #d8e4ee; }
+    .qual-tab:hover span { color: #3c5567; }
+    .qual-tab--active {
+      background: #b8cfe0;
+    }
+    .qual-tab--active span {
+      color: #2e4a5e;
+    }
+    .qual-tab--active::after {
+      content: '';
+      position: absolute;
+      right: -1px;
+      top: 20%;
+      height: 60%;
+      width: 3px;
+      background: #3a3a3a;
+      border-radius: 3px 0 0 3px;
+    }
+
+    .qual-content {
+      flex: 1;
+      padding: 28px 32px;
+      min-height: 300px;
+      max-width: 560px;
+    }
+
+    .qual-cluster-panel {
+      width: 320px;
+      flex-shrink: 0;
+      background: var(--blue);
+      padding: 16px;
+      border-left: 1px solid #e0e0e0;
+      overflow-y: auto;
+    }
+    .cluster-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 12px 10px;
+    }
+    .cluster-cell {
+      text-align: center;
+    }
+    .cluster-cell img {
+      width: 100%;
+      border-radius: 6px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .cluster-cell .cluster-label {
+      font-size: 0.7rem;
+      color: var(--text-light);
+      margin-top: 4px;
+    }
+    .cluster-pane { display: none; }
+    .cluster-pane--active { display: block; }
+    .sm-video-label {
+      font-size: 0.78rem;
+      font-weight: bold;
+      color: var(--text-light);
+      margin: 10px 0 4px;
+    }
+
+    .cluster-task-desc {
+      margin-top: 24px;
+      font-size: 0.78rem;
+      line-height: 1.6;
+      color: var(--text-light);
+      text-align: justify;
+    }
+
+    .qual-pane { display: none; }
+    .qual-pane--active { display: block; }
+
+    .task-card {
+      background: var(--white);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .task-card img {
+      width: 100%;
+      display: block;
+      border-radius: var(--radius-sm);
+    }
+
+    @media (max-width: 700px) {
+      .qual-panel { flex-direction: column; }
+      .qual-tabs {
+        flex-direction: row;
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #eee;
+      }
+      .qual-tab span {
+        writing-mode: horizontal-tb;
+        transform: none;
+      }
+      .qual-tab--active::after {
+        right: auto; top: auto;
+        bottom: -1px; left: 20%;
+        width: 60%; height: 3px;
+        border-radius: 3px 3px 0 0;
+      }
+      .qual-content { padding: 20px 16px; min-height: auto; }
+    }
+
+    /* ========== Tables ========== */
+    .result-table-wrapper {
+      overflow-x: auto;
+      margin-top: 4px;
+    }
+    .result-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      font-size: 0.92rem;
+    }
+    .result-table thead th {
+      background: #dce4ec;
+      color: #4a4f55;
+      padding: 12px 16px;
+      text-align: center;
+      font-weight: bold;
+    }
+    .result-table tbody td {
+      padding: 10px 16px;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+    }
+    .result-table tbody tr:nth-child(odd) { background: var(--white); }
+    .result-table tbody tr:nth-child(even) { background: #f0f4f7; }
+    .result-table tbody tr:last-child td { border-bottom: none; }
+    .result-table .best { color: #3a3a3a; }
+
+    .result-table--sm { font-size: 0.72rem; }
+    .result-table--sm thead th { padding: 6px 6px; font-size: 0.72rem; }
+    .result-table--sm tbody td { padding: 5px 6px; white-space: nowrap; }
+    .result-table--sm small { color: var(--text-light); font-size: 0.62rem; }
+
+    .cat-row td {
+      background: #f4f4f2 !important;
+      font-style: italic;
+      color: var(--text-light);
+      text-align: left !important;
+      padding: 5px 10px !important;
+      font-size: 0.75rem;
+    }
+
+    .tables-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: stretch;
+    }
+    .table-block {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .table-caption {
+      font-weight: bold;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+      color: var(--text);
+      text-align: center;
+    }
+
+    @media (max-width: 700px) {
+      .tables-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ========== BibTeX ========== */
+    .bibtex-section { }
+    .bibtex-block {
+      background: var(--white);
+      border-radius: var(--radius-sm);
+      padding: 24px 28px;
+      box-shadow: var(--shadow);
+      overflow-x: auto;
+      position: relative;
+    }
+    .bibtex-block pre {
+      margin: 0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-family: 'Comic Sans MS', cursive;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .copy-btn:hover { background: var(--accent-dark); }
+
+    /* ========== Footer ========== */
+    .footer {
+      text-align: center;
+      padding: 24px 0;
+      color: var(--text-light);
+      font-size: 0.85rem;
+      border-top: 1px solid #f0f0f0;
+    }
+    .footer a { color: var(--text-light); }
+
+    /* ========== Placeholder styling ========== */
+    .placeholder {
+      background: repeating-linear-gradient(
+        -45deg,
+        #f0ead2,
+        #f0ead2 10px,
+        #e8e2cc 10px,
+        #e8e2cc 20px
+      );
+      border: 2px dashed #c5b87a;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #8a7a50;
+      font-weight: bold;
+      font-size: 1rem;
+      min-height: 200px;
+      padding: 20px;
+      text-align: center;
+    }
+    .placeholder--tall { min-height: 360px; }
+
+    /* Replay-able section titles */
+    .replay-title {
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+    .replay-title:hover {
+      transform: none;
+    }
+    .replay-title .title-label {
+      transition: opacity 0.2s;
+    }
+    .replay-title .replay-label {
+      position: absolute;
+      left: 0; top: 0; right: 0; bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+    }
+    .replay-title:hover .title-label { opacity: 0; }
+    .replay-title:hover .replay-label { opacity: 1; }
+
+    /* ========== Navbar ========== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: var(--white);
+      border-bottom: 1px solid #e8e8e8;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.12);
+      padding: 0 40px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .navbar-logos {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .navbar-logos img {
+      height: 47px;
+      width: auto;
+    }
+    .navbar-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+    .navbar a {
+      font-size: 1rem;
+      font-weight: bold;
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.2s;
+      letter-spacing: 0.3px;
+    }
+    .navbar a:hover {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    /* ========== Responsive ========== */
+    @media (max-width: 700px) {
+      .paper-title { font-size: 1.5rem; }
+      .card { padding: 28px 24px; }
+      .section { padding: 36px 0; }
+      .hero-section { padding: 40px 0 36px; }
+      .stat-row { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="navbar-logos">
+    <img src="./static/images/cmu_logo.png" alt="CMU" />
+    <img src="./static/images/icl_logo.jpg" alt="ICL" />
+  </div>
+  <div class="navbar-links">
+    <a href="#abstract">Abstract</a>
+    <a href="#method">Method</a>
+    <a href="#results">Results</a>
+  </div>
+</nav>
+
+<div class="page-card">
+
+<!-- ============================================================
+     SECTION 1: HERO — 论文标题、会议、作者、链接
+     ============================================================ -->
+<section class="hero-section">
+  <div class="container">
+
+    <h1 class="paper-title">
+      <span class="hl"><span class="enap">E</span>mergent <span class="enap">N</span>eural <span class="enap">A</span>utomaton <span class="enap">P</span>olicies:</span> <br/>
+      <span class="hl">Learning Symbolic Structure from Visuomotor Trajectories</span><span class="blink-cursor"></span>
+    </h1>
+
+    <div class="authors">
+      <span><a href="#">Yiyuan Pan</a><sup>*</sup>,</span>
+      <span><a href="#">Xusheng Luo</a><sup>*</sup>,</span>
+      <span><a href="#">Hanjiang Hu</a>,</span>
+      <span><a href="#">Peiqi Yu</a>,</span>
+      <span><a href="#">Changliu Liu</a></span>
+    </div>
+
+    <div class="affiliations">
+      Robotics Institute, Carnegie Mellon University
+    </div>
+
+    <div class="equal-contrib">* Equal contribution</div>
+
+    <!-- TODO: 替换各链接地址，不需要的按钮可以删除 -->
+    <div class="link-buttons">
+      <a href="#" class="link-btn link-btn--paper"><i class="fas fa-file-pdf"></i> Paper</a>
+      <a href="#" class="link-btn link-btn--arxiv"><i class="ai ai-arxiv"></i> arXiv</a>
+      <a href="#" class="link-btn link-btn--video"><i class="fab fa-youtube"></i> Video</a>
+      <a href="#" class="link-btn link-btn--code"><i class="fab fa-github"></i> Code</a>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SECTION 2: TEASER — 首屏展示 (GIF / 视频)
+     ============================================================ -->
+<section class="teaser-section">
+  <div class="container" style="text-align:center;">
+
+    <video class="teaser-media" autoplay loop muted playsinline>
+      <source src="./static/videos/teaser_new.mp4" type="video/mp4" />
+    </video>
+
+    <p class="teaser-caption" style="font-size:0.88rem; color:var(--text-light);">
+      <span class="enap">ENAP</span> enables unsupervised discovery of task structures,
+      improving both <strong><em>interpretability</em></strong> and <strong><em>task performance</em></strong>.
+    </p>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SECTION 3: ABSTRACT — 摘要
+     ============================================================ -->
+<section class="section abstract-section" id="abstract">
+  <div class="container">
+    <div class="card card--cream">
+      <div class="section-title">
+        <span class="dot dot--cream"></span> <span class="title-text highlight--cream">Abstract</span>
+      </div>
+      <p class="abstract-text">
+        Scaling robot learning to long-horizon tasks remains a formidable challenge.
+        While end-to-end policies often lack the structural priors needed for effective
+        long-term reasoning, traditional neuro-symbolic methods rely heavily on
+        hand-crafted symbolic priors. To address the issue, we introduce
+        <span class="enap">ENAP</span>
+        (<span class="enap">E</span>mergent <span class="enap">N</span>eural
+        <span class="enap">A</span>utomaton <span class="enap">P</span>olicy),
+        a framework that allows a bi-level neuro-symbolic policy to adaptively emerge
+        from demonstrations. Specifically, we first employ adaptive clustering and an
+        extension of the \(L^*\) algorithm to infer a Mealy state machine from
+        visuomotor data, which serves as an interpretable high-level planner capturing
+        latent task modes. Then, this discrete structure guides a low-level reactive
+        residual network to learn precise continuous control via behavior cloning.
+        By explicitly modeling the task policy with discrete transitions and continuous
+        residuals, <span class="enap">ENAP</span> achieves high sample efficiency and
+        interpretability without requiring task-specific labels. Extensive experiments
+        on complex manipulation and long-horizon tasks demonstrate that
+        <span class="enap">ENAP</span> outperforms state-of-the-art end-to-end VLA
+        policies by up to <strong>27%</strong> in low-data regimes, while offering a
+        structured representation of robotic intent.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SECTION 4: METHOD OVERVIEW — 方法图 + 说明
+     ============================================================ -->
+<section class="section method-section" id="method">
+  <div class="container">
+    <div class="card card--pink">
+      <div class="section-title replay-title" data-target="video-method">
+        <span class="dot dot--pink"></span>
+        <span class="title-text highlight--pink" style="position:relative;">
+          <span class="title-label">Method Overview</span>
+          <span class="replay-label">▶ Replay</span>
+        </span>
+      </div>
+
+      <video class="method-figure replay-video" id="video-method" autoplay muted playsinline>
+        <source src="./static/videos/diagram.mp4" type="video/mp4" />
+      </video>
+
+      <div class="method-desc">
+        <p>
+          <span class="enap">ENAP</span> follows a three-stage pipeline—(i) symbol
+          abstraction, (ii) structure extraction via an extended \(L^*\), and
+          (iii) bi-level control—to learn structured policies from demonstrations.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SECTION 5: RESULTS — 实验结果
+     ============================================================ -->
+<section class="section results-section">
+  <div class="container">
+
+    <!-- 5a. Inference Pipeline -->
+    <div class="card card--green result-block">
+      <div class="section-title replay-title" style="margin-bottom:16px;" data-target="video-inference">
+        <span class="dot dot--green"></span>
+        <span class="title-text highlight--green" style="position:relative;">
+          <span class="title-label">Inference Pipeline</span>
+          <span class="replay-label">▶ Replay</span>
+        </span>
+      </div>
+      <video class="result-img replay-video" id="video-inference" autoplay muted playsinline>
+        <source src="./static/videos/qual.mp4" type="video/mp4" />
+      </video>
+      <p style="font-size:0.88rem; line-height:1.75; margin-top:16px; text-align:justify; color:var(--text-light);">
+        <span class="enap">ENAP</span> resolves multi-modal decisions by leveraging a learned
+        state machine and observation-conditioned residual control to guide transitions
+        into the correct logical branch.
+      </p>
+    </div>
+
+    <!-- 5b. Comparison with Sota -->
+    <div class="card card--blue result-block" style="margin-top: 20px;" id="results">
+      <div class="section-title" style="margin-bottom:16px;">
+        <span class="dot dot--blue"></span> <span class="title-text highlight--blue">Comparison with Sota</span>
+      </div>
+
+      <div class="tables-grid">
+        <!-- LEFT: Table 1 -->
+        <div class="table-block">
+          <div class="table-caption">Complex Manipulation Tasks</div>
+          <div class="result-table-wrapper">
+            <table class="result-table result-table--sm">
+              <thead>
+                <tr>
+                  <th rowspan="2">Method</th>
+                  <th rowspan="2">Param (M)</th>
+                  <th>DualStack</th>
+                  <th>Peg</th>
+                </tr>
+                <tr>
+                  <th>Cube (%)</th>
+                  <th>Insert (%)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Oracle</td>
+                  <td>2.98</td>
+                  <td>98.3 <small>±0.4</small></td>
+                  <td>86.7 <small>±0.8</small></td>
+                </tr>
+                <tr>
+                  <td>Transformer</td>
+                  <td>63.81</td>
+                  <td>38.7 <small>±6.0</small></td>
+                  <td>51.8 <small>±5.5</small></td>
+                </tr>
+                <tr>
+                  <td>GMM</td>
+                  <td>46.11</td>
+                  <td>73.6 <small>±2.3</small></td>
+                  <td>53.1 <small>±2.6</small></td>
+                </tr>
+                <tr>
+                  <td>Diffusion Policy</td>
+                  <td>114.39</td>
+                  <td>41.2 <small>±7.2</small></td>
+                  <td>31.1 <small>±6.8</small></td>
+                </tr>
+                <tr>
+                  <td>OpenVLA</td>
+                  <td>7652.10</td>
+                  <td>69.8 <small>±2.0</small></td>
+                  <td>42.3 <small>±2.8</small></td>
+                </tr>
+                <tr>
+                  <td>\(\pi_0\)</td>
+                  <td>3288.52</td>
+                  <td>73.4 <small>±1.2</small></td>
+                  <td>51.6 <small>±1.4</small></td>
+                </tr>
+                <tr>
+                  <td>ENAP (Oracle)</td>
+                  <td class="best">2.66</td>
+                  <td>98.8 <small>±0.3</small></td>
+                  <td>85.6 <small>±0.6</small></td>
+                </tr>
+                <tr>
+                  <td><strong>ENAP*</strong> (DINO)</td>
+                  <td>22.94</td>
+                  <td class="best">76.0 <small>±2.0</small></td>
+                  <td class="best">63.2 <small>±2.4</small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <!-- RIGHT: Table 2 + Table 3 stacked -->
+        <div class="table-block">
+          <!-- Table 2 -->
+          <div class="table-caption">Long-Horizon TAMP Tasks</div>
+          <div class="result-table-wrapper">
+            <table class="result-table result-table--sm">
+              <thead>
+                <tr>
+                  <th rowspan="2">Method</th>
+                  <th colspan="2">Seq. (%)</th>
+                  <th colspan="2">Hier. (%)</th>
+                </tr>
+                <tr>
+                  <th>3/5</th>
+                  <th>5/5</th>
+                  <th>3/5</th>
+                  <th>5/5</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>FLOWER</td>
+                  <td>91.0 <small>±0.6</small></td>
+                  <td>90.6 <small>±0.5</small></td>
+                  <td>90.8 <small>±0.7</small></td>
+                  <td>15.9 <small>±0.4</small></td>
+                </tr>
+                <tr>
+                  <td>ENAP (FLOWER)</td>
+                  <td class="best">97.0 <small>±0.4</small></td>
+                  <td class="best">96.8 <small>±0.3</small></td>
+                  <td class="best">95.5 <small>±0.5</small></td>
+                  <td class="best">28.2 <small>±0.6</small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Table 4: Real-World (moved from left) -->
+          <div class="table-caption" style="margin-top:20px;">Real-World Evaluation</div>
+          <div class="result-table-wrapper">
+            <table class="result-table result-table--sm">
+              <thead>
+                <tr>
+                  <th rowspan="2">Method</th>
+                  <th rowspan="2">Param (M)</th>
+                  <th rowspan="2">Speed (ms)</th>
+                  <th>Stack</th>
+                  <th>Pick</th>
+                  <th>Hanger</th>
+                </tr>
+                <tr>
+                  <th>Lego</th>
+                  <th>Place</th>
+                  <th>Task</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>\(\pi_{0.5}\)</td>
+                  <td>3403</td>
+                  <td>6841</td>
+                  <td>58.82</td>
+                  <td>76.47</td>
+                  <td>64.71</td>
+                </tr>
+                <tr>
+                  <td><strong>ENAP*</strong> (DINO)</td>
+                  <td>23</td>
+                  <td>281</td>
+                  <td class="best">88.24</td>
+                  <td class="best">94.12</td>
+                  <td class="best">94.12</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 5c. Qualitative Results — 左侧竖向 Tab + 右侧内容 -->
+    <div class="section-title" style="margin-top: 36px;">
+      <span class="dot dot--blue"></span> <span class="title-text highlight--blue">Qualitative Results</span>
+    </div>
+
+    <div class="qual-panel">
+      <div class="qual-tabs">
+        <button class="qual-tab qual-tab--active" data-task="stacklego">
+          <span>StackLego</span>
+        </button>
+        <button class="qual-tab" data-task="hanger">
+          <span>Hanger</span>
+        </button>
+        <button class="qual-tab" data-task="multigoal">
+          <span>MultiGoalPickPlace</span>
+        </button>
+      </div>
+
+      <div class="qual-content">
+        <!-- StackLego -->
+        <div class="qual-pane qual-pane--active" id="pane-stacklego">
+          <div class="task-card">
+            <video class="result-img qual-video" autoplay muted playsinline>
+              <source src="./static/videos/stacklego.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="sm-video-label">Real-time PMM Transition</div>
+          <div class="task-card">
+            <video class="qual-video" muted playsinline style="width:100%; aspect-ratio:2.45; display:block;">
+              <source src="./static/videos/sm_lego.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+
+        <!-- Hanger -->
+        <div class="qual-pane" id="pane-hanger">
+          <div class="task-card">
+            <video class="result-img qual-video" muted playsinline>
+              <source src="./static/videos/hanger.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="sm-video-label">Real-time PMM Transition</div>
+          <div class="task-card">
+            <video class="qual-video" muted playsinline style="width:100%; aspect-ratio:2.45; display:block;">
+              <source src="./static/videos/sm_hanger.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+
+        <!-- MultiGoalPickPlace -->
+        <div class="qual-pane" id="pane-multigoal">
+          <div class="task-card">
+            <video class="result-img qual-video" muted playsinline>
+              <source src="./static/videos/multigoal.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="sm-video-label">Real-time PMM Transition</div>
+          <div class="task-card">
+            <video class="qual-video" muted playsinline style="width:100%; aspect-ratio:2.45; display:block;">
+              <source src="./static/videos/sm_multi.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cluster image grid (right side) -->
+      <div class="qual-cluster-panel">
+        <!-- StackLego clusters (shown by default) -->
+        <div class="cluster-pane cluster-pane--active" id="cluster-stacklego">
+          <div class="cluster-grid cluster-grid--9">
+            <div class="cluster-cell"><img src="./static/images/StackLego/L_c0.png" alt="Cluster 0" /><div class="cluster-label">Cluster 0</div></div>
+            <div class="cluster-cell"><img src="./static/images/StackLego/L_c1.png" alt="Cluster 1" /><div class="cluster-label">Cluster 1</div></div>
+            <div class="cluster-cell"><img src="./static/images/StackLego/L_c2.png" alt="Cluster 2" /><div class="cluster-label">Cluster 2</div></div>
+            <div class="cluster-cell"><img src="./static/images/StackLego/L_c3.png" alt="Cluster 3" /><div class="cluster-label">Cluster 3</div></div>
+            <div class="cluster-cell"><img src="./static/images/StackLego/L_c4.png" alt="Cluster 4" /><div class="cluster-label">Cluster 4</div></div>
+            <div class="cluster-cell"><img src="./static/images/StackLego/L_c5.png" alt="Cluster 5" /><div class="cluster-label">Cluster 5</div></div>
+            <div class="cluster-cell"><img src="./static/images/StackLego/L_c6.png" alt="Cluster 6" /><div class="cluster-label">Cluster 6</div></div>
+            <div class="cluster-cell"></div>
+            <div class="cluster-cell"></div>
+          </div>
+          <p class="cluster-task-desc">
+            StackLego is a high-precision assembly task where a blue brick must be placed onto a fixed red brick without force feedback, evaluated by graded stacking success.
+          </p>
+        </div>
+        <!-- Hanger clusters -->
+        <div class="cluster-pane" id="cluster-hanger">
+          <div class="cluster-grid cluster-grid--9">
+            <div class="cluster-cell"><img src="./static/images/Hanger/H_c0.png" alt="Cluster 0" /><div class="cluster-label">Cluster 0</div></div>
+            <div class="cluster-cell"><img src="./static/images/Hanger/H_c1.png" alt="Cluster 1" /><div class="cluster-label">Cluster 1</div></div>
+            <div class="cluster-cell"><img src="./static/images/Hanger/H_c2.png" alt="Cluster 2" /><div class="cluster-label">Cluster 2</div></div>
+            <div class="cluster-cell"><img src="./static/images/Hanger/H_c3.png" alt="Cluster 3" /><div class="cluster-label">Cluster 3</div></div>
+            <div class="cluster-cell"><img src="./static/images/Hanger/H_c4.png" alt="Cluster 4" /><div class="cluster-label">Cluster 4</div></div>
+            <div class="cluster-cell"></div>
+            <div class="cluster-cell"></div>
+            <div class="cluster-cell"></div>
+            <div class="cluster-cell"></div>
+          </div>
+          <p class="cluster-task-desc">
+            Hanger is a manipulation task requiring the agent to unhook a hanger and transfer it across an obstacle to the opposite side of a rack.
+          </p>
+        </div>
+        <!-- MultiGoal clusters -->
+        <div class="cluster-pane" id="cluster-multigoal">
+          <div class="cluster-grid cluster-grid--9">
+            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c0.png" alt="Cluster 0" /><div class="cluster-label">Cluster 0</div></div>
+            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c1.png" alt="Cluster 1" /><div class="cluster-label">Cluster 1</div></div>
+            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c2.png" alt="Cluster 2" /><div class="cluster-label">Cluster 2</div></div>
+            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c3.png" alt="Cluster 3" /><div class="cluster-label">Cluster 3</div></div>
+            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c4.png" alt="Cluster 4" /><div class="cluster-label">Cluster 4</div></div>
+            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c5.png" alt="Cluster 5" /><div class="cluster-label">Cluster 5</div></div>
+            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c6.png" alt="Cluster 6" /><div class="cluster-label">Cluster 6</div></div>
+            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c7.png" alt="Cluster 7" /><div class="cluster-label">Cluster 7</div></div>
+            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c8.png" alt="Cluster 8" /><div class="cluster-label">Cluster 8</div></div>
+          </div>
+          <p class="cluster-task-desc">
+            MultiGoalPickPlace is a sorting task where the agent must match and place multiple colored cans into their corresponding bowls from randomized initial positions.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SECTION 6: BIBTEX — 引用
+     ============================================================ -->
+<section class="section bibtex-section">
+  <div class="container">
+    <div class="section-title">
+      <span class="dot" style="background:#bbb;"></span> <span class="title-text" style="background:#e8e8e8;">BibTeX</span>
+    </div>
+    <div class="bibtex-block" style="border-left: 5px solid #ccc;">
+      <pre id="bibtex-content">@inproceedings{pan2026enap,
+  title={Emergent Neural Automaton Policies: Learning Symbolic Structure from Visuomotor Trajectories},
+  author={Yiyuan Pan and Xusheng Luo and Hanjiang Hu and Peiqi Yu and Changliu Liu},
+  booktitle={Proceedings of Conference Name},
+  year={2026}
+}</pre>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <p>
+    This website template is adapted from
+    <a href="https://github.com/nerfies/nerfies.github.io" target="_blank">Nerfies</a>.
+  </p>
+</footer>
+
+</div><!-- /.page-card -->
+
+<script>
+function copyBibtex() {
+  const text = document.getElementById('bibtex-content').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+  });
+}
+
+// Video: autoplay once on load, replay on title click
+document.querySelectorAll('.replay-title').forEach(title => {
+  const targetId = title.dataset.target;
+  const video = document.getElementById(targetId);
+  if (!video) return;
+
+  title.addEventListener('click', () => {
+    video.currentTime = 0;
+    video.play();
+  });
+});
+
+document.querySelectorAll('.qual-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.qual-tab').forEach(t => t.classList.remove('qual-tab--active'));
+    document.querySelectorAll('.qual-pane').forEach(p => p.classList.remove('qual-pane--active'));
+    document.querySelectorAll('.qual-video').forEach(v => { v.pause(); v.currentTime = 0; });
+    tab.classList.add('qual-tab--active');
+    const pane = document.getElementById('pane-' + tab.dataset.task);
+    pane.classList.add('qual-pane--active');
+    pane.querySelectorAll('.qual-video').forEach(v => { v.currentTime = 0; v.play(); });
+    document.querySelectorAll('.cluster-pane').forEach(p => p.classList.remove('cluster-pane--active'));
+    const cp = document.getElementById('cluster-' + tab.dataset.task);
+    if (cp) cp.classList.add('cluster-pane--active');
+  });
+});
+</script>
+
+</body>
+</html>
