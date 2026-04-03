@@ -29,10 +29,9 @@
       --text-light: #7a7a7a;
       --accent: #5b7a6e;
       --accent-dark: #3d5a4e;
-      --radius: 16px;
-      --radius-sm: 10px;
-      --shadow: 0 3px 18px rgba(0,0,0,0.09);
-      --shadow-hover: 0 6px 30px rgba(0,0,0,0.15);
+      --radius: 8px;
+      --radius-sm: 6px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06);
     }
 
     /* ========== Reset & Base ========== */
@@ -60,34 +59,17 @@
     /* ========== Section Spacing ========== */
     .section {
       padding: 48px 0;
-      border-bottom: 1px solid #f0f0f0;
+      border-bottom: 1px solid #ececec;
     }
 
-    /* ========== Cards ========== */
-    .card {
-      background: var(--white);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 40px 44px;
-      transition: box-shadow 0.25s ease;
-    }
-    .card:hover {
-      box-shadow: var(--shadow-hover);
-    }
-
-    /* Colored accent strips on the left */
-    .card--cream  { border-left: 5px solid var(--cream); }
-    .card--pink   { border-left: 5px solid #e8c4bc; }
-    .card--green  { border-left: 5px solid #c5d6b2; }
-    .card--blue   { border-left: 5px solid #b8cfe0; }
-
-    /* ========== Page Card ========== */
-    .page-card {
+    /* ========== Single page shell (only outer surface) ========== */
+    .page-shell {
       max-width: 1100px;
       margin: 0 auto;
       background: var(--white);
-      border-radius: 20px;
-      box-shadow: 0 3px 30px rgba(0,0,0,0.09);
+      border-radius: 12px;
+      border: 1px solid #e8e8e8;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.04);
       overflow: hidden;
     }
 
@@ -110,32 +92,6 @@
       background: linear-gradient(180deg, transparent 55%, var(--cream) 55%);
     }
     .enap { color: #BE5D3D; font-weight: bold; }
-
-    .blink-cursor {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      margin-left: 6px;
-      vertical-align: text-bottom;
-      animation: blink 1s step-end infinite;
-    }
-    .blink-cursor::before {
-      content: '';
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--text);
-    }
-    .blink-cursor::after {
-      content: '';
-      width: 3px;
-      height: 0.7em;
-      background: var(--text);
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
 
     .venue-badge {
       display: inline-block;
@@ -212,8 +168,8 @@
       max-width: 800px;
       margin: 0 auto;
       display: block;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      border-radius: var(--radius-sm);
+      border: 1px solid #eee;
     }
     .teaser-caption {
       text-align: center;
@@ -227,35 +183,17 @@
 
     /* ========== Section Titles ========== */
     .section-title {
-      font-size: 1.15rem;
-      font-weight: bold;
-      margin-bottom: 24px;
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 1.1rem;
+      color: #1a1a1a;
+      letter-spacing: -0.02em;
+      display: block;
     }
-    .section-title .dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
+    .replay-heading {
+      position: relative;
       display: inline-block;
-      flex-shrink: 0;
     }
-    .dot--cream { background: #ddd5a5; }
-    .dot--pink  { background: #e8c4bc; }
-    .dot--green { background: #c5d6b2; }
-    .dot--blue  { background: #b8cfe0; }
-
-    /* Pastel highlight behind section title text */
-    .section-title .title-text {
-      padding: 2px 14px;
-      border-radius: 6px;
-    }
-    .highlight--cream { background: var(--cream); }
-    .highlight--pink  { background: var(--pink); }
-    .highlight--green { background: var(--green); }
-    .highlight--blue  { background: var(--blue); }
 
     /* Inline highlight for emphasis text */
     .hl-cream { background: var(--cream); padding: 1px 6px; border-radius: 4px; }
@@ -275,8 +213,8 @@
     .method-section { }
     .method-figure {
       width: 100%;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      border-radius: var(--radius-sm);
+      border: 1px solid #eee;
     }
     .method-desc {
       margin-top: 24px;
@@ -300,16 +238,6 @@
     .result-block {
       margin-bottom: 36px;
     }
-    .result-block h3 {
-      font-size: 1rem;
-      font-weight: bold;
-      margin-bottom: 12px;
-      display: inline-block;
-    }
-    .card--pink h3  { background: var(--pink);  padding: 2px 12px; border-radius: 5px; }
-    .card--blue h3  { background: var(--blue);  padding: 2px 12px; border-radius: 5px; }
-    .card--green h3 { background: var(--green); padding: 2px 12px; border-radius: 5px; }
-    .card--cream h3 { background: var(--cream); padding: 2px 12px; border-radius: 5px; }
     .result-block p {
       font-size: 0.85rem;
       color: var(--text-light);
@@ -318,15 +246,15 @@
     .result-img {
       width: 100%;
       border-radius: var(--radius-sm);
-      box-shadow: var(--shadow);
+      border: 1px solid #eee;
     }
 
     /* Qualitative panel: vertical tabs left + content right */
     .qual-panel {
       display: flex;
       gap: 0;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      border-radius: var(--radius-sm);
+      border: 1px solid #e5e5e5;
       overflow: hidden;
       background: var(--white);
     }
@@ -409,8 +337,8 @@
     }
     .cluster-cell img {
       width: 100%;
-      border-radius: 6px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      border-radius: 4px;
+      border: 1px solid rgba(0,0,0,0.06);
     }
     .cluster-cell .cluster-label {
       font-size: 0.7rem;
@@ -440,7 +368,6 @@
     .task-card {
       background: var(--white);
       border-radius: var(--radius-sm);
-      box-shadow: var(--shadow);
       overflow: hidden;
     }
     .task-card img {
@@ -481,7 +408,7 @@
       border-spacing: 0;
       border-radius: var(--radius-sm);
       overflow: hidden;
-      box-shadow: var(--shadow);
+      border: 1px solid #e0e4e8;
       font-size: 0.92rem;
     }
     .result-table thead th {
@@ -541,10 +468,10 @@
     /* ========== BibTeX ========== */
     .bibtex-section { }
     .bibtex-block {
-      background: var(--white);
+      background: #fafafa;
       border-radius: var(--radius-sm);
       padding: 24px 28px;
-      box-shadow: var(--shadow);
+      border: 1px solid #e8e8e8;
       overflow-x: auto;
       position: relative;
     }
@@ -677,7 +604,6 @@
     /* ========== Responsive ========== */
     @media (max-width: 700px) {
       .paper-title { font-size: 1.5rem; }
-      .card { padding: 28px 24px; }
       .section { padding: 36px 0; }
       .hero-section { padding: 40px 0 36px; }
       .stat-row { grid-template-columns: repeat(2, 1fr); }
@@ -699,7 +625,7 @@
   </div>
 </nav>
 
-<div class="page-card">
+<div class="page-shell">
 
 <!-- ============================================================
      SECTION 1: HERO — 论文标题、会议、作者、链接
@@ -709,7 +635,7 @@
 
     <h1 class="paper-title">
       <span class="hl"><span class="enap">E</span>mergent <span class="enap">N</span>eural <span class="enap">A</span>utomaton <span class="enap">P</span>olicies:</span> <br/>
-      <span class="hl">Learning Symbolic Structure from Visuomotor Trajectories</span><span class="blink-cursor"></span>
+      <span class="hl">Learning Symbolic Structure from Visuomotor Trajectories</span>
     </h1>
 
     <div class="authors">
@@ -762,10 +688,7 @@
      ============================================================ -->
 <section class="section abstract-section" id="abstract">
   <div class="container">
-    <div class="card card--cream">
-      <div class="section-title">
-        <span class="dot dot--cream"></span> <span class="title-text highlight--cream">Abstract</span>
-      </div>
+      <div class="section-title">Abstract</div>
       <p class="abstract-text">
         Scaling robot learning to long-horizon tasks remains a formidable challenge.
         While end-to-end policies often lack the structural priors needed for effective
@@ -788,7 +711,6 @@
         policies by up to <strong>27%</strong> in low-data regimes, while offering a
         structured representation of robotic intent.
       </p>
-    </div>
   </div>
 </section>
 
@@ -798,10 +720,8 @@
      ============================================================ -->
 <section class="section method-section" id="method">
   <div class="container">
-    <div class="card card--pink">
       <div class="section-title replay-title" data-target="video-method">
-        <span class="dot dot--pink"></span>
-        <span class="title-text highlight--pink" style="position:relative;">
+        <span class="replay-heading">
           <span class="title-label">Method Overview</span>
           <span class="replay-label">▶ Replay</span>
         </span>
@@ -818,7 +738,6 @@
           (iii) bi-level control—to learn structured policies from demonstrations.
         </p>
       </div>
-    </div>
   </div>
 </section>
 
@@ -830,10 +749,9 @@
   <div class="container">
 
     <!-- 5a. Inference Pipeline -->
-    <div class="card card--green result-block">
+    <div class="result-block">
       <div class="section-title replay-title" style="margin-bottom:16px;" data-target="video-inference">
-        <span class="dot dot--green"></span>
-        <span class="title-text highlight--green" style="position:relative;">
+        <span class="replay-heading">
           <span class="title-label">Inference Pipeline</span>
           <span class="replay-label">▶ Replay</span>
         </span>
@@ -849,10 +767,8 @@
     </div>
 
     <!-- 5b. Comparison with Sota -->
-    <div class="card card--blue result-block" style="margin-top: 20px;" id="results">
-      <div class="section-title" style="margin-bottom:16px;">
-        <span class="dot dot--blue"></span> <span class="title-text highlight--blue">Comparison with Sota</span>
-      </div>
+    <div class="result-block" style="margin-top: 20px;" id="results">
+      <div class="section-title" style="margin-bottom:16px;">Comparison with Sota</div>
 
       <div class="tables-grid">
         <!-- LEFT: Table 1 -->
@@ -1006,13 +922,10 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <!-- 5c. Qualitative Results — 左侧竖向 Tab + 右侧内容 -->
-    <div class="section-title" style="margin-top: 36px;">
-      <span class="dot dot--blue"></span> <span class="title-text highlight--blue">Qualitative Results</span>
-    </div>
+    <div class="section-title" style="margin-top: 36px;">Qualitative Results</div>
 
     <div class="qual-panel">
       <div class="qual-tabs">
@@ -1165,7 +1078,7 @@
   </p>
 </footer>
 
-</div><!-- /.page-card -->
+</div><!-- /.page-shell -->
 
 <script>
 /* Uncomment when BibTeX section is visible again
