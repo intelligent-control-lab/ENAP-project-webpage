@@ -4,13 +4,103 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="google-site-verification" content="WBlWpfo18hLpHQM6nIZcIvYprRjOvSmrWRgfmSaHdq8" />
-  <title>ENAP: Emergent Neural Automaton Policies</title>
+  <title>Emergent Neural Automaton Policies: Learning Symbolic Structure from Visuomotor Trajectories (ENAP, RSS 2026)</title>
+  <meta name="description" content="ENAP (RSS 2026) is a neuro-symbolic imitation learning method that learns task structure from visuomotor demonstrations as a state machine, and outperforms end-to-end VLA policies by up to 27% in low-data regimes." />
+  <link rel="canonical" href="https://intelligent-control-lab.github.io/ENAP-project-webpage/" />
 
-  <!-- KaTeX (数学公式渲染) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
-    onload="renderMathInElement(document.body);"></script>
+  <!-- 社交分享卡片 (Open Graph / Twitter) -->
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="ENAP" />
+  <meta property="og:title" content="ENAP: Emergent Neural Automaton Policies (RSS 2026)" />
+  <meta property="og:description" content="ENAP (RSS 2026) is a neuro-symbolic imitation learning method that learns task structure from visuomotor demonstrations as a state machine, and outperforms end-to-end VLA policies by up to 27% in low-data regimes." />
+  <meta property="og:url" content="https://intelligent-control-lab.github.io/ENAP-project-webpage/" />
+  <meta property="og:image" content="https://intelligent-control-lab.github.io/ENAP-project-webpage/static/images/Teaser.jpg" />
+  <meta property="og:image:width" content="3808" />
+  <meta property="og:image:height" content="2018" />
+  <meta property="og:image:alt" content="State machines that ENAP learns from demonstrations for three manipulation tasks" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ENAP: Emergent Neural Automaton Policies (RSS 2026)" />
+  <meta name="twitter:description" content="ENAP (RSS 2026) is a neuro-symbolic imitation learning method that learns task structure from visuomotor demonstrations as a state machine, and outperforms end-to-end VLA policies by up to 27% in low-data regimes." />
+  <meta name="twitter:image" content="https://intelligent-control-lab.github.io/ENAP-project-webpage/static/images/Teaser.jpg" />
+
+  <!-- 结构化数据 (schema.org JSON-LD)：论文、代码、视频 -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ScholarlyArticle",
+        "@id": "https://intelligent-control-lab.github.io/ENAP-project-webpage/#paper",
+        "headline": "Emergent Neural Automaton Policies: Learning Symbolic Structure from Visuomotor Trajectories",
+        "name": "Emergent Neural Automaton Policies: Learning Symbolic Structure from Visuomotor Trajectories",
+        "alternateName": ["ENAP", "Emergent Neural Automaton Policy"],
+        "author": [
+          { "@type": "Person", "name": "Yiyuan Pan", "url": "https://pyywill.github.io/", "affiliation": { "@id": "https://intelligent-control-lab.github.io/ENAP-project-webpage/#cmu-ri" } },
+          { "@type": "Person", "name": "Xusheng Luo", "url": "https://xushengluo92.github.io/", "affiliation": { "@id": "https://intelligent-control-lab.github.io/ENAP-project-webpage/#cmu-ri" } },
+          { "@type": "Person", "name": "Hanjiang Hu", "url": "https://hanjianghu.net/", "affiliation": { "@id": "https://intelligent-control-lab.github.io/ENAP-project-webpage/#cmu-ri" } },
+          { "@type": "Person", "name": "Peiqi Yu", "url": "https://patricia1019.github.io/", "affiliation": { "@id": "https://intelligent-control-lab.github.io/ENAP-project-webpage/#cmu-ri" } },
+          { "@type": "Person", "name": "Changliu Liu", "url": "https://icontrol.ri.cmu.edu/people/changliu.html", "affiliation": { "@id": "https://intelligent-control-lab.github.io/ENAP-project-webpage/#cmu-ri" } }
+        ],
+        "datePublished": "2026-03-26",
+        "inLanguage": "en",
+        "isPartOf": {
+          "@type": "PublicationVolume",
+          "name": "Robotics: Science and Systems XXII (RSS 2026), Sydney, Australia",
+          "volumeNumber": "XXII",
+          "url": "https://roboticsproceedings.org/rss22/index.html"
+        },
+        "identifier": [
+          { "@type": "PropertyValue", "propertyID": "DOI", "value": "10.15607/RSS.2026.XXII.144" },
+          { "@type": "PropertyValue", "propertyID": "arXiv", "value": "2603.25903" }
+        ],
+        "sameAs": [
+          "https://doi.org/10.15607/RSS.2026.XXII.144",
+          "https://roboticsproceedings.org/rss22/p144.html",
+          "https://arxiv.org/abs/2603.25903"
+        ],
+        "url": "https://intelligent-control-lab.github.io/ENAP-project-webpage/",
+        "image": "https://intelligent-control-lab.github.io/ENAP-project-webpage/static/images/Teaser.jpg",
+        "abstract": "Scaling robot learning to long-horizon tasks remains a formidable challenge. While end-to-end policies often lack the structural priors needed for effective long-term reasoning, traditional neuro-symbolic methods rely heavily on hand-crafted symbolic priors. To address the issue, we introduce ENAP (Emergent Neural Automaton Policy), a framework that allows a bi-level neuro-symbolic policy to adaptively emerge from demonstrations. Specifically, we first employ adaptive clustering and an extension of the L* algorithm to infer a Mealy state machine from visuomotor data, which serves as an interpretable high-level planner capturing latent task modes. Then, this discrete structure guides a low-level reactive residual network to learn precise continuous control via behavior cloning. By explicitly modeling the task policy with discrete transitions and continuous residuals, ENAP achieves high sample efficiency and interpretability without requiring task-specific labels. Extensive experiments on complex manipulation and long-horizon tasks demonstrate that ENAP outperforms state-of-the-art end-to-end VLA policies by up to 27% in low-data regimes, while offering a structured representation of robotic intent.",
+        "keywords": "learning task structure from demonstrations, neuro-symbolic imitation learning, state machine, probabilistic Mealy machine, automata learning, L* algorithm, behavior cloning, long-horizon manipulation, interpretable robot policy, vision-language-action (VLA) baselines",
+        "subjectOf": { "@id": "https://intelligent-control-lab.github.io/ENAP-project-webpage/#video" }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://intelligent-control-lab.github.io/ENAP-project-webpage/#cmu-ri",
+        "name": "Robotics Institute, Carnegie Mellon University",
+        "url": "https://www.ri.cmu.edu/"
+      },
+      {
+        "@type": "SoftwareSourceCode",
+        "@id": "https://intelligent-control-lab.github.io/ENAP-project-webpage/#code",
+        "name": "ENAP_controller",
+        "description": "Official implementation of ENAP (RSS 2026).",
+        "codeRepository": "https://github.com/intelligent-control-lab/ENAP_controller",
+        "programmingLanguage": "Python",
+        "citation": { "@id": "https://intelligent-control-lab.github.io/ENAP-project-webpage/#paper" }
+      },
+      {
+        "@type": "VideoObject",
+        "@id": "https://intelligent-control-lab.github.io/ENAP-project-webpage/#video",
+        "name": "Emergent Neural Automaton Policies: Learning Symbolic Structure from Visuomotor Trajectories",
+        "description": "Video overview of ENAP (RSS 2026): state machines learned from demonstrations and real-robot results.",
+        "thumbnailUrl": "https://i.ytimg.com/vi/cdkZhygPIDQ/maxresdefault.jpg",
+        "uploadDate": "2026-04-15T09:16:53-07:00",
+        "duration": "PT3M17S",
+        "embedUrl": "https://www.youtube.com/embed/cdkZhygPIDQ",
+        "url": "https://www.youtube.com/watch?v=cdkZhygPIDQ"
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://intelligent-control-lab.github.io/ENAP-project-webpage/",
+        "url": "https://intelligent-control-lab.github.io/ENAP-project-webpage/",
+        "name": "Emergent Neural Automaton Policies: Learning Symbolic Structure from Visuomotor Trajectories (ENAP, RSS 2026)",
+        "mainEntity": { "@id": "https://intelligent-control-lab.github.io/ENAP-project-webpage/#paper" },
+        "relatedLink": ["https://github.com/intelligent-control-lab/ENAP_controller", "https://www.youtube.com/watch?v=cdkZhygPIDQ"]
+      }
+    ]
+  }
+  </script>
 
   <!-- FontAwesome (图标) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -237,11 +327,11 @@
       margin-top: 14px;
       font-size: 0.97rem;
       color: var(--text-light);
-      max-width: 100%;
+      max-width: 46rem;
       margin-left: auto;
       margin-right: auto;
       line-height: 1.6;
-      white-space: nowrap;
+      text-wrap: balance;
     }
 
     /* ========== Section Titles ========== */
@@ -659,6 +749,8 @@
       color: #3a3a3a;
     }
     .result-table .best { color: #1a1a1a; }
+    /* π₀ / π₀.₅ written as plain HTML so crawlers can read the baseline names */
+    sub { font-size: 0.72em; line-height: 0; }
 
     .result-table--sm { font-size: 0.79rem; }
     .result-table--sm thead th { padding: 7px 6px; font-size: 0.75rem; }
@@ -720,6 +812,8 @@
 
     @media (max-width: 700px) {
       .tables-grid { grid-template-columns: 1fr; }
+      /* let wide tables scroll inside their wrapper instead of being clipped by the page shell */
+      .table-block { min-width: 0; }
       .table-block--left,
       .table-block--right {
         height: auto;
@@ -732,6 +826,12 @@
 
     /* ========== BibTeX ========== */
     .bibtex-section { }
+    .bibtex-note {
+      font-size: 0.94rem;
+      line-height: 1.6;
+      color: var(--text-light);
+      margin-bottom: 14px;
+    }
     .bibtex-block {
       background: #fafafa;
       border-radius: var(--radius-sm);
@@ -746,7 +846,7 @@
       font-size: 0.92rem;
       line-height: 1.6;
       white-space: pre-wrap;
-      word-break: break-all;
+      overflow-wrap: anywhere;
       color: var(--text);
     }
     .copy-btn {
@@ -844,6 +944,10 @@
     /* ========== Responsive ========== */
     @media (max-width: 700px) {
       .paper-title { font-size: 1.42rem; }
+      /* keep section titles below the paper title on phones */
+      .section-title { font-size: 1.22rem; }
+      .section-title--major { font-size: 1.3rem; }
+      .abstract-section .section-title { font-size: 1.18rem; }
       .page-shell { padding: 0 clamp(14px, 4vw, 22px); }
       .section { padding: 40px 0; }
       .abstract-section.section {
@@ -885,8 +989,8 @@
 
 <nav class="navbar">
   <div class="navbar-logos">
-    <img src="./static/images/cmu_logo.png" alt="CMU" />
-    <img src="./static/images/icl_logo.jpg" alt="ICL" />
+    <img src="./static/images/cmu_logo.png" alt="Carnegie Mellon University logo" />
+    <img src="./static/images/icl_logo.jpg" alt="Intelligent Control Lab logo" />
   </div>
   <div class="navbar-links">
     <a href="#top">Resource</a>
@@ -908,6 +1012,8 @@
       <span class="paper-title__line hl"><span class="enap">E</span>mergent <span class="enap">N</span>eural <span class="enap">A</span>utomaton <span class="enap">P</span>olicies:</span>
       <span class="paper-title__sub hl">Learning Symbolic Structure from Visuomotor Trajectories</span>
     </h1>
+
+    <a class="venue-badge" href="https://roboticsproceedings.org/rss22/p144.html" target="_blank" rel="noopener noreferrer" title="Robotics: Science and Systems XXII, Sydney, Australia">RSS 2026</a>
 
     <div class="authors">
       <span><a href="https://pyywill.github.io/" target="_blank" rel="noopener noreferrer">Yiyuan Pan</a><sup>*</sup>,</span>
@@ -941,11 +1047,12 @@
 <section class="teaser-section">
   <div class="container" style="text-align:center;">
 
-    <img class="teaser-media" src="./static/images/Teaser.jpg" alt="ENAP teaser figure" />
+    <img class="teaser-media" src="./static/images/Teaser.jpg" alt="State machines learned by ENAP from demonstrations for three tasks: pushing a T-block to a goal pose, peg insertion with a failure-recovery loop, and placing a red can into the red bowl on a real robot, each shown with its discovered visual clusters" />
 
     <p class="teaser-caption">
-      <span class="enap">ENAP</span> enables unsupervised discovery of task structures,
-      improving both <strong><em>interpretability</em></strong> and <strong><em>task performance</em></strong>.
+      <span class="enap">ENAP</span> is a neuro-symbolic imitation learning method: it learns task structure
+      from demonstrations as a state machine, without labels, improving both
+      <strong><em>interpretability</em></strong> and <strong><em>task performance</em></strong>.
     </p>
 
   </div>
@@ -957,7 +1064,7 @@
      ============================================================ -->
 <section class="section abstract-section" id="abstract">
   <div class="container">
-      <div class="section-title">Abstract</div>
+      <h2 class="section-title">Abstract</h2>
       <p class="abstract-text">
         Scaling robot learning to long-horizon tasks remains a formidable challenge.
         While end-to-end policies often lack the structural priors needed for effective
@@ -989,12 +1096,12 @@
      ============================================================ -->
 <section class="section takeaways-section" id="takeaways">
   <div class="container">
-    <div class="section-title section-title--major">Key Takeaways</div>
+    <h2 class="section-title section-title--major">Key Takeaways</h2>
     <div class="takeaways-list">
       <div class="takeaway-item">
         <p class="takeaway-line">
-          <span class="takeaway-label">Unsupervised structure discovery from demonstrations:</span>
-          <span class="enap">ENAP</span> learns an interpretable task structure from raw visuomotor demonstrations, without requiring manually designed labels.
+          <span class="takeaway-label">Learning task structure from demonstrations, without labels:</span>
+          <span class="enap">ENAP</span> extracts an interpretable state machine from raw visuomotor demonstrations. Unlike prior automata-learning and neuro-symbolic imitation learning methods for robots, it needs no task-specific labels or hand-crafted symbolic priors.
         </p>
       </div>
       <div class="takeaway-item">
@@ -1006,7 +1113,7 @@
       <div class="takeaway-item">
         <p class="takeaway-line">
           <span class="takeaway-label">Better efficiency, interpretability, and long-horizon capability:</span>
-          Across complex manipulation, long-horizon TAMP, and real-world tasks, <span class="enap">ENAP</span> improves performance in low-data regimes while providing a structured representation.
+          Across complex manipulation, long-horizon TAMP, and real-world tasks, <span class="enap">ENAP</span> outperforms vision-language-action (VLA) baselines while using fewer parameters, with margins of 8% to 27% in low-data regimes, and it provides a structured representation of the task.
         </p>
       </div>
     </div>
@@ -1019,22 +1126,23 @@
      ============================================================ -->
 <section class="section method-section" id="method">
   <div class="container">
-      <div class="section-title section-title--major">Method Overview</div>
+      <h2 class="section-title section-title--major">Learning a State Machine from Demonstrations</h2>
 
-      <img class="method-figure" src="./static/images/MethodOverview.jpg" alt="Method overview diagram" />
+      <img class="method-figure" src="./static/images/MethodOverview.jpg" alt="ENAP method overview: (i) demonstration frames are clustered with HDBSCAN into visual symbols; (ii) an extended L* algorithm with an RNN history encoder builds a probabilistic Mealy machine through membership and equivalence queries; (iii) at run time the state machine proposes a base action that a residual network, trained by behavior cloning, refines" />
 
       <div class="method-desc">
         <p>
           <span class="enap">ENAP</span> follows a three-stage pipeline—(i) symbol
-          abstraction, (ii) structure extraction via an extended L*, and
-          (iii) bi-level control—to learn structured policies from demonstrations.
-          This design yields an interpretable probabilistic Mealy machine (PMM), which
-          provides coarse task-level structure for downstream policy network.
+          abstraction, (ii) structure extraction via an extended L* automata-learning
+          algorithm, and (iii) bi-level control—to learn structured policies from demonstrations.
+          This design yields an interpretable probabilistic Mealy machine (PMM), a finite-state
+          machine over the discovered symbols, which provides coarse task-level structure for
+          the downstream policy network.
         </p>
       </div>
 
-      <div class="section-title section-title--major section-title--after-block">Inference Pipeline</div>
-      <img class="result-img" src="./static/images/InferencePipeline.jpg" alt="Inference pipeline diagram" />
+      <h3 class="section-title section-title--major section-title--after-block">Inference: Resolving Multi-Modal Decisions</h3>
+      <img class="result-img" src="./static/images/InferencePipeline.jpg" alt="ENAP inference on StackLego: for two different brick poses the learned state machine reaches the same decision point, and the residual network uses the current camera and pose features to choose the branch that matches the scene" />
       <p class="inference-desc">
         <span class="enap">ENAP</span> resolves multi-modal decisions by leveraging a learned
         state machine and observation-conditioned residual network. At decision points, the
@@ -1052,12 +1160,12 @@
   <div class="container">
 
     <div class="result-block" id="results">
-      <div class="section-title section-title--major">Comparison with SoTA</div>
+      <h2 class="section-title section-title--major">Comparison with VLA and Diffusion Policies</h2>
 
       <div class="tables-grid">
         <!-- LEFT: Table 1 -->
         <div class="table-block table-block--left">
-          <div class="table-caption">Complex Manipulation Tasks</div>
+          <h3 class="table-caption">Complex Manipulation Tasks (ManiSkill)</h3>
           <div class="result-table-wrapper">
             <table class="result-table result-table--sm">
               <thead>
@@ -1104,7 +1212,7 @@
                   <td>42.3 <small>±2.8</small></td>
                 </tr>
                 <tr>
-                  <td>\(\pi_0\)</td>
+                  <td>π<sub>0</sub></td>
                   <td>3288.52</td>
                   <td>73.4 <small>±1.2</small></td>
                   <td>51.6 <small>±1.4</small></td>
@@ -1130,7 +1238,7 @@
         <!-- RIGHT: Table 2 + Table 3 — top/bottom aligned with left column -->
         <div class="table-block table-block--right">
           <div class="table-block__stack">
-            <div class="table-caption">Long-Horizon TAMP Tasks</div>
+            <h3 class="table-caption">Long-Horizon TAMP Tasks (CALVIN)</h3>
             <div class="result-table-wrapper">
               <table class="result-table result-table--sm">
                 <thead>
@@ -1166,7 +1274,7 @@
             </div>
           </div>
           <div class="table-block__stack">
-            <div class="table-caption">Real-World Evaluation</div>
+            <h3 class="table-caption">Real-World Evaluation (Kinova Gen3)</h3>
             <div class="result-table-wrapper">
               <table class="result-table result-table--sm">
                 <thead>
@@ -1186,7 +1294,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td>\(\pi_{0.5}\)</td>
+                    <td>π<sub>0.5</sub></td>
                     <td>3403</td>
                     <td>6841</td>
                     <td>58.82</td>
@@ -1209,15 +1317,20 @@
       </div>
 
       <p class="section-subtext section-subtext--after-block">
-        <span class="enap">ENAP</span> consistently achieves stronger performance–efficiency
-        trade-offs than prior baselines across complex manipulation, long-horizon TAMP, and
-        real-world evaluation, while using substantially fewer parameters and enabling
-        structured interpretation.
+        <span class="enap">ENAP</span> achieves stronger performance–efficiency trade-offs than
+        end-to-end baselines in all three settings. On ManiSkill, <span class="enap">ENAP</span>* (DINO)
+        outperforms every non-oracle baseline on both tasks with 22.9M parameters, versus 3.3B for
+        π<sub>0</sub> and 7.7B for OpenVLA. On CALVIN, <span class="enap">ENAP</span> built on the
+        latent space of the FLOWER VLA uses 39% fewer parameters than FLOWER (571M vs. 947M) and
+        raises 5/5 success from 90.6% to 96.8% (sequential) and from 15.9% to 28.2% (hierarchical).
+        On a real Kinova Gen3 arm, trained with 25 demonstrations per task, <span class="enap">ENAP</span>*
+        reaches 88.2–94.1% success versus 58.8–76.5% for π<sub>0.5</sub>, with 23M vs. 3.4B parameters
+        and 281 ms vs. 6.8 s inference time.
       </p>
     </div>
 
     <!-- 5c. Qualitative Results — 左侧竖向 Tab + 右侧内容 -->
-    <div class="section-title section-title--major section-title--spaced">Qualitative Results</div>
+    <h2 class="section-title section-title--major section-title--spaced">Real-Robot Results: Learned State Machines</h2>
     <p class="qual-hint">Click a task tab on the left to play videos.</p>
 
     <div class="qual-panel">
@@ -1285,13 +1398,13 @@
         <!-- StackLego clusters (shown by default) -->
         <div class="cluster-pane cluster-pane--active" id="cluster-stacklego">
           <div class="cluster-grid cluster-grid--9">
-            <div class="cluster-cell"><img src="./static/images/StackLego/L_c0.png" alt="Cluster 0" /><div class="cluster-label">Cluster 0</div></div>
-            <div class="cluster-cell"><img src="./static/images/StackLego/L_c1.png" alt="Cluster 1" /><div class="cluster-label">Cluster 1</div></div>
-            <div class="cluster-cell"><img src="./static/images/StackLego/L_c2.png" alt="Cluster 2" /><div class="cluster-label">Cluster 2</div></div>
-            <div class="cluster-cell"><img src="./static/images/StackLego/L_c3.png" alt="Cluster 3" /><div class="cluster-label">Cluster 3</div></div>
-            <div class="cluster-cell"><img src="./static/images/StackLego/L_c4.png" alt="Cluster 4" /><div class="cluster-label">Cluster 4</div></div>
-            <div class="cluster-cell"><img src="./static/images/StackLego/L_c5.png" alt="Cluster 5" /><div class="cluster-label">Cluster 5</div></div>
-            <div class="cluster-cell"><img src="./static/images/StackLego/L_c6.png" alt="Cluster 6" /><div class="cluster-label">Cluster 6</div></div>
+            <div class="cluster-cell"><img src="./static/images/StackLego/L_c0.png" alt="StackLego, cluster 0 (a learned visual symbol): gripper raised, blue brick on the plate beside the red brick" /><div class="cluster-label">Cluster 0</div></div>
+            <div class="cluster-cell"><img src="./static/images/StackLego/L_c1.png" alt="StackLego, cluster 1 (a learned visual symbol): blue brick pressed onto the red brick" /><div class="cluster-label">Cluster 1</div></div>
+            <div class="cluster-cell"><img src="./static/images/StackLego/L_c2.png" alt="StackLego, cluster 2 (a learned visual symbol): arm out of view, blue brick to the right of the red brick" /><div class="cluster-label">Cluster 2</div></div>
+            <div class="cluster-cell"><img src="./static/images/StackLego/L_c3.png" alt="StackLego, cluster 3 (a learned visual symbol): gripper reaching the blue brick to the right of the red brick" /><div class="cluster-label">Cluster 3</div></div>
+            <div class="cluster-cell"><img src="./static/images/StackLego/L_c4.png" alt="StackLego, cluster 4 (a learned visual symbol): arm withdrawn, blue brick to the left of the red brick" /><div class="cluster-label">Cluster 4</div></div>
+            <div class="cluster-cell"><img src="./static/images/StackLego/L_c5.png" alt="StackLego, cluster 5 (a learned visual symbol): gripper reaching the blue brick to the left of the red brick" /><div class="cluster-label">Cluster 5</div></div>
+            <div class="cluster-cell"><img src="./static/images/StackLego/L_c6.png" alt="StackLego, cluster 6 (a learned visual symbol): gripper grasping the blue brick next to the red brick" /><div class="cluster-label">Cluster 6</div></div>
             <div class="cluster-cell"></div>
             <div class="cluster-cell"></div>
           </div>
@@ -1302,11 +1415,11 @@
         <!-- Hanger clusters -->
         <div class="cluster-pane" id="cluster-hanger">
           <div class="cluster-grid cluster-grid--9">
-            <div class="cluster-cell"><img src="./static/images/Hanger/H_c0.png" alt="Cluster 0" /><div class="cluster-label">Cluster 0</div></div>
-            <div class="cluster-cell"><img src="./static/images/Hanger/H_c1.png" alt="Cluster 1" /><div class="cluster-label">Cluster 1</div></div>
-            <div class="cluster-cell"><img src="./static/images/Hanger/H_c2.png" alt="Cluster 2" /><div class="cluster-label">Cluster 2</div></div>
-            <div class="cluster-cell"><img src="./static/images/Hanger/H_c3.png" alt="Cluster 3" /><div class="cluster-label">Cluster 3</div></div>
-            <div class="cluster-cell"><img src="./static/images/Hanger/H_c4.png" alt="Cluster 4" /><div class="cluster-label">Cluster 4</div></div>
+            <div class="cluster-cell"><img src="./static/images/Hanger/H_c0.png" alt="Hanger, cluster 0 (a learned visual symbol): gripper grasping the hanger on the rack" /><div class="cluster-label">Cluster 0</div></div>
+            <div class="cluster-cell"><img src="./static/images/Hanger/H_c1.png" alt="Hanger, cluster 1 (a learned visual symbol): gripper lifting the hanger off the rack bar" /><div class="cluster-label">Cluster 1</div></div>
+            <div class="cluster-cell"><img src="./static/images/Hanger/H_c2.png" alt="Hanger, cluster 2 (a learned visual symbol): hanger resting on the rack, gripper out of view" /><div class="cluster-label">Cluster 2</div></div>
+            <div class="cluster-cell"><img src="./static/images/Hanger/H_c3.png" alt="Hanger, cluster 3 (a learned visual symbol): gripper approaching the hanger from above" /><div class="cluster-label">Cluster 3</div></div>
+            <div class="cluster-cell"><img src="./static/images/Hanger/H_c4.png" alt="Hanger, cluster 4 (a learned visual symbol): gripper carrying the hanger across the rack" /><div class="cluster-label">Cluster 4</div></div>
             <div class="cluster-cell"></div>
             <div class="cluster-cell"></div>
             <div class="cluster-cell"></div>
@@ -1319,15 +1432,15 @@
         <!-- MultiGoal clusters -->
         <div class="cluster-pane" id="cluster-multigoal">
           <div class="cluster-grid cluster-grid--9">
-            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c0.png" alt="Cluster 0" /><div class="cluster-label">Cluster 0</div></div>
-            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c1.png" alt="Cluster 1" /><div class="cluster-label">Cluster 1</div></div>
-            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c2.png" alt="Cluster 2" /><div class="cluster-label">Cluster 2</div></div>
-            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c3.png" alt="Cluster 3" /><div class="cluster-label">Cluster 3</div></div>
-            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c4.png" alt="Cluster 4" /><div class="cluster-label">Cluster 4</div></div>
-            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c5.png" alt="Cluster 5" /><div class="cluster-label">Cluster 5</div></div>
-            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c6.png" alt="Cluster 6" /><div class="cluster-label">Cluster 6</div></div>
-            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c7.png" alt="Cluster 7" /><div class="cluster-label">Cluster 7</div></div>
-            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c8.png" alt="Cluster 8" /><div class="cluster-label">Cluster 8</div></div>
+            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c0.png" alt="MultiGoalPickPlace, cluster 0 (a learned visual symbol): gripper above a can standing in the green bowl" /><div class="cluster-label">Cluster 0</div></div>
+            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c1.png" alt="MultiGoalPickPlace, cluster 1 (a learned visual symbol): gripper grasping a can in the green bowl" /><div class="cluster-label">Cluster 1</div></div>
+            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c2.png" alt="MultiGoalPickPlace, cluster 2 (a learned visual symbol): carrying a can toward the blue bowl" /><div class="cluster-label">Cluster 2</div></div>
+            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c3.png" alt="MultiGoalPickPlace, cluster 3 (a learned visual symbol): carrying a can toward the red bowl" /><div class="cluster-label">Cluster 3</div></div>
+            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c4.png" alt="MultiGoalPickPlace, cluster 4 (a learned visual symbol): gripper withdrawn, a can left in the green bowl" /><div class="cluster-label">Cluster 4</div></div>
+            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c5.png" alt="MultiGoalPickPlace, cluster 5 (a learned visual symbol): placing a can into the red bowl" /><div class="cluster-label">Cluster 5</div></div>
+            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c6.png" alt="MultiGoalPickPlace, cluster 6 (a learned visual symbol): lifting a can above the green bowl" /><div class="cluster-label">Cluster 6</div></div>
+            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c7.png" alt="MultiGoalPickPlace, cluster 7 (a learned visual symbol): gripper withdrawn to the right, a can in the green bowl" /><div class="cluster-label">Cluster 7</div></div>
+            <div class="cluster-cell"><img src="./static/images/MultiGoal/M_c8.png" alt="MultiGoalPickPlace, cluster 8 (a learned visual symbol): placing a can into the blue bowl" /><div class="cluster-label">Cluster 8</div></div>
           </div>
           <p class="cluster-task-desc">
             MultiGoalPickPlace is a sorting task where the agent must match and place multiple colored cans into their corresponding bowls.
@@ -1352,11 +1465,11 @@
      ============================================================ -->
 <section class="section properties-section" id="properties">
   <div class="container">
-    <div class="section-title section-title--major">Properties</div>
+    <h2 class="section-title section-title--major">Properties: Policy Mixtures and Failure Recovery</h2>
     <div class="properties-shell">
       <div class="properties-col properties-col--white">
         <div class="properties-white-top">
-          <div class="table-caption">MultiGoalPushT Performance Comparison</div>
+          <h3 class="table-caption">MultiGoalPushT Performance Comparison</h3>
           <div class="result-table-wrapper">
             <table class="result-table result-table--sm">
               <thead>
@@ -1364,7 +1477,7 @@
                   <th>Metric (%)</th>
                   <th>DP</th>
                   <th>GMM</th>
-                  <th>\(\pi_0\)</th>
+                  <th>π<sub>0</sub></th>
                   <th>ENAP (Oracle)</th>
                 </tr>
               </thead>
@@ -1387,7 +1500,7 @@
             </table>
           </div>
         </div>
-        <img class="properties-figure" src="./static/images/Retry.jpg" alt="Structural recovery and retry behavior illustration" />
+        <img class="properties-figure" src="./static/images/Retry.jpg" alt="Failure recovery on a real Kinova Gen3 arm in StackLego: after a misaligned placement the state machine loops back to the same phase and the robot re-attempts until the bricks are aligned" />
       </div>
       <div class="properties-col properties-col--gray">
         <div class="properties-text-block">
@@ -1413,13 +1526,21 @@
      ============================================================ -->
 <section class="section bibtex-section">
   <div class="container">
-    <div class="section-title">BibTeX</div>
+    <h2 class="section-title">BibTeX</h2>
+    <p class="bibtex-note">
+      Published at Robotics: Science and Systems XXII (RSS 2026), Sydney, Australia.
+      DOI: <a href="https://doi.org/10.15607/RSS.2026.XXII.144" target="_blank" rel="noopener noreferrer">10.15607/RSS.2026.XXII.144</a>
+      · arXiv: <a href="https://arxiv.org/abs/2603.25903" target="_blank" rel="noopener noreferrer">2603.25903</a>
+    </p>
     <div class="bibtex-block">
-      <pre id="bibtex-content">@article{pan2026emergent,
+      <pre id="bibtex-content">@inproceedings{pan2026emergent,
   title={Emergent Neural Automaton Policies: Learning Symbolic Structure from Visuomotor Trajectories},
   author={Pan, Yiyuan and Luo, Xusheng and Hu, Hanjiang and Yu, Peiqi and Liu, Changliu},
-  journal={arXiv preprint arXiv:2603.25903},
-  year={2026}
+  booktitle={Proceedings of Robotics: Science and Systems},
+  address={Sydney, Australia},
+  month={July},
+  year={2026},
+  doi={10.15607/RSS.2026.XXII.144}
 }</pre>
     </div>
   </div>
